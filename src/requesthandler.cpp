@@ -137,8 +137,6 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
     else if (testURIWithPattern(parsedURI, p_image)
         && conInfo.connectionType == PUT)
     {
-        std::cout << "PUT_1 !!!!!!" << std::endl;
-
         SearchRequest req;
         req.imageData = conInfo.uploadedData;
 

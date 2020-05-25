@@ -291,7 +291,7 @@ u_int32_t ORBSearcher::processSimilar(SearchRequest &request,
 
 
 /**
- * @brief Return to the client the found results.
+ * @brief Return to the client the found one result with a maximum score.
  * @param rankedResults the ranked list of results.
  * @param req the received search request.
  * @param i_maxNbResults the maximum number of results returned.
@@ -299,28 +299,27 @@ u_int32_t ORBSearcher::processSimilar(SearchRequest &request,
 void ORBSearcher::returnResults(priority_queue<SearchResult> &rankedResults,
                                   SearchRequest &req, unsigned i_maxNbResults)
 {
-    list<u_int32_t> imageIds;
-
-    unsigned i_res = 0;
-    while(!rankedResults.empty()
-          && i_res < i_maxNbResults)
+    if( rankedResults.empty() )
     {
-        const SearchResult &res = rankedResults.top();
-        imageIds.push_back(res.i_imageId);
-        i_res++;
-        cout << "Id: " << res.i_imageId << ", score: " << res.f_weight << endl;
-        req.results.push_back(res.i_imageId);
-        req.boundingRects.push_back(res.boundingRect);
-        req.scores.push_back(res.f_weight);
-
-        string tag;
-        if (index->getTag(res.i_imageId, tag) == OK)
-            req.tags.push_back(tag);
-        else
-            req.tags.push_back("");
-
-        rankedResults.pop();
+        std::cout << "Couldn't find similar images" << std::endl;
+        return;
     }
+
+    const SearchResult &res = rankedResults.top();
+    req.results.push_back(res.i_imageId);
+    req.boundingRects.push_back(res.boundingRect);
+    req.scores.push_back(res.f_weight);
+
+    std::cout << "ImageId: " << req.imageId << " Score: " << req.scores.back() << std::endl;
+
+    string tag;
+    if (index->getTag(res.i_imageId, tag) == OK){
+        req.tags.push_back(tag);
+    }
+    else {
+        req.tags.push_back("");
+    }
+
 }
 
 
