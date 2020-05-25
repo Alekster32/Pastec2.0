@@ -194,8 +194,6 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
     else if (testURIWithPattern(parsedURI, p_tag)
              && conInfo.connectionType == PUT)
     {
-        std::cout << "PUT_2 !!!!!!" << std::endl;
-
         u_int32_t i_imageId = atoi(parsedURI[2].c_str());
 
         string dataStr(conInfo.uploadedData.begin(),
@@ -218,8 +216,6 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
              && conInfo.connectionType == POST)
     {
         SearchRequest req;
-
-        std::cout << "POST_1 !!!!!!" << std::endl;
 
         req.imageData = conInfo.uploadedData;
         req.client = NULL;
@@ -329,8 +325,6 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
     else if (testURIWithPattern(parsedURI, p_ioIndex)
              && conInfo.connectionType == POST)
     {
-        std::cout << "POST_2 !!!!!!" << std::endl;
-
         string dataStr(conInfo.uploadedData.begin(),
                        conInfo.uploadedData.end());
 
@@ -368,8 +362,6 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
     else if (testURIWithPattern(parsedURI, p_root)
              && conInfo.connectionType == POST)
     {
-        std::cout << "POST_3 !!!!!!" << std::endl;
-
         string dataStr(conInfo.uploadedData.begin(),
                        conInfo.uploadedData.end());
 
@@ -430,8 +422,6 @@ bool RequestHandler::existTheSameImage(SearchRequest &req)
     if( imageSearcher->searchImage(req) == SEARCH_RESULTS && !req.scores.empty() )
     {
         auto max = *std::max_element(req.scores.begin(), req.scores.end());
-        std::cout << "MAX: " << max << std::endl;
-
         return max != 0;
     }
     return false;
