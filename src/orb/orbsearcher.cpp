@@ -310,7 +310,7 @@ void ORBSearcher::returnResults(priority_queue<SearchResult> &rankedResults,
     req.boundingRects.push_back(res.boundingRect);
     req.scores.push_back(res.f_weight);
 
-    std::cout << "ImageId: " << req.imageId << " Score: " << req.scores.back() << std::endl;
+    std::cout << "ImageId: " << req.results.back() << " Score: " << req.scores.back() << std::endl;
 
     string tag;
     if (index->getTag(res.i_imageId, tag) == OK){
