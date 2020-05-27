@@ -47,7 +47,7 @@ enum MessagesOut
     IMAGE_REMOVED =                     0x1101,
     IMAGE_TAG_ADDED =                   0x1110,
     IMAGE_TAG_REMOVED =                 0x1111,
-    IMAGE_IS_EXISTS =                   0x10000,
+    IMAGE_EXISTS =                      0x10000,
 
     INDEX_LOADED =                      0x10001,
     INDEX_TAGS_LOADED =                 0x10010,
@@ -96,7 +96,7 @@ public:
             case IMAGE_REMOVED: s = "IMAGE_REMOVED"; break;
             case IMAGE_TAG_ADDED: s = "IMAGE_TAG_ADDED"; break;
             case IMAGE_TAG_REMOVED: s = "IMAGE_TAG_REMOVED"; break;
-            case IMAGE_IS_EXISTS: s = "IMAGE_IS_EXISTS"; break;
+            case IMAGE_EXISTS: s = "IMAGE_EXISTS"; break;
 
             case INDEX_LOADED: s = "INDEX_LOADED"; break;
             case INDEX_TAGS_LOADED: s = "INDEX_TAGS_LOADED"; break;

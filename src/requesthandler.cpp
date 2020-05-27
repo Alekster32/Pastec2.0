@@ -150,7 +150,7 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
             std::cout << "We already have the same image" << std::endl;
             isExist = true;
             i_imageId = req.results.back();
-            i_ret = IMAGE_IS_EXISTS;
+            i_ret = IMAGE_EXISTS;
         }
 
         if( !isExist )
