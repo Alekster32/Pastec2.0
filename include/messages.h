@@ -30,38 +30,39 @@ using namespace std;
 
 enum MessagesOut
 {
-    OK =                                0x10010000,
-    ERROR_GENERIC =                     0x10020000,
-    MISFORMATTED_REQUEST =              0x10020100,
-    AUTHENTIFICATION_ERROR =            0x10020200,
-    PONG =                              0x10030000,
-    TOO_MANY_CLIENTS =                  0x10040000,
+    OK =                                0x0,
+    ERROR_GENERIC =                     0x1,
+    MISFORMATTED_REQUEST =              0x10,
+    AUTHENTIFICATION_ERROR =            0x11,
+    PONG =                              0x100,
+    TOO_MANY_CLIENTS =                  0x101,
 
-    IMAGE_DATA_TOO_BIG =                0x10050100,
-    IMAGE_NOT_INDEXED =                 0x10050200,
-    IMAGE_NOT_DECODED =                 0x10050400,
-    IMAGE_SIZE_TOO_SMALL =              0x10050500,
-    IMAGE_NOT_FOUND =                   0x10050700,
-    IMAGE_TAG_NOT_FOUND =               0x10050701,
-    IMAGE_ADDED =                       0x10050800,
-    IMAGE_REMOVED =                     0x10050900,
-    IMAGE_TAG_ADDED =                   0x10051000,
-    IMAGE_TAG_REMOVED =                 0x10051100,
+    IMAGE_DATA_TOO_BIG =                0x110,
+    IMAGE_NOT_INDEXED =                 0x111,
+    IMAGE_NOT_DECODED =                 0x1000,
+    IMAGE_SIZE_TOO_SMALL =              0x1001,
+    IMAGE_NOT_FOUND =                   0x1010,
+    IMAGE_TAG_NOT_FOUND =               0x1011,
+    IMAGE_ADDED =                       0x1100,
+    IMAGE_REMOVED =                     0x1101,
+    IMAGE_TAG_ADDED =                   0x1110,
+    IMAGE_TAG_REMOVED =                 0x1111,
+    IMAGE_IS_EXIST =                    0x10000,
 
-    INDEX_LOADED =                      0x10060100,
-    INDEX_TAGS_LOADED =                 0x10060110,
-    INDEX_NOT_FOUND =                   0x10060200,
-    INDEX_TAGS_NOT_FOUND =              0x10060210,
-    INDEX_WRITTEN =                     0x10060300,
-    INDEX_TAGS_WRITTEN =                0x10060310,
-    INDEX_NOT_WRITTEN =                 0x10060400,
-    INDEX_TAGS_NOT_WRITTEN =            0x10060410,
-    INDEX_CLEARED =                     0x10060500,
-    INDEX_IMAGE_IDS =                   0x10060600,
+    INDEX_LOADED =                      0x10001,
+    INDEX_TAGS_LOADED =                 0x10010,
+    INDEX_NOT_FOUND =                   0x10011,
+    INDEX_TAGS_NOT_FOUND =              0x10100,
+    INDEX_WRITTEN =                     0x10101,
+    INDEX_TAGS_WRITTEN =                0x10110,
+    INDEX_NOT_WRITTEN =                 0x10111,
+    INDEX_TAGS_NOT_WRITTEN =            0x11000,
+    INDEX_CLEARED =                     0x11001,
+    INDEX_IMAGE_IDS =                   0x11010,
 
-    SEARCH_RESULTS =                    0x10070100,
+    SEARCH_RESULTS =                    0x11011,
 
-    IMAGE_DOWNLOADER_HTTP_ERROR =       0x10080100,
+    IMAGE_DOWNLOADER_HTTP_ERROR =       0x11100,
 };
 
 
@@ -95,6 +96,7 @@ public:
             case IMAGE_REMOVED: s = "IMAGE_REMOVED"; break;
             case IMAGE_TAG_ADDED: s = "IMAGE_TAG_ADDED"; break;
             case IMAGE_TAG_REMOVED: s = "IMAGE_TAG_REMOVED"; break;
+            case IMAGE_IS_EXIST: s = "IMAGE_IS_EXIST"; break;
 
             case INDEX_LOADED: s = "INDEX_LOADED"; break;
             case INDEX_TAGS_LOADED: s = "INDEX_TAGS_LOADED"; break;

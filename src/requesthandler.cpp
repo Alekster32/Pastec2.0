@@ -140,38 +140,46 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
         SearchRequest req;
         req.imageData = conInfo.uploadedData;
 
-        if( existTheSameImage(req) )
+        u_int32_t i_imageId = 0u;
+        u_int32_t i_ret = ERROR_GENERIC;
+        unsigned i_nbFeaturesExtracted;
+
+        bool isExist = false;
+        if( existTheSameImage(req) && !req.results.empty() )
         {
             std::cout << "We already have the same image" << std::endl;
-            return;
+            isExist = true;
+            i_imageId = req.results.back();
+            i_ret = IMAGE_IS_EXIST;
         }
 
-        u_int32_t i_imageId = atoi(parsedURI[2].c_str());
-
-        unsigned i_nbFeaturesExtracted;
-        u_int32_t i_ret = featureExtractor->processNewImage(
-            i_imageId, conInfo.uploadedData.size(), conInfo.uploadedData.data(),
-            i_nbFeaturesExtracted);
-
-        if (i_ret == IMAGE_NOT_DECODED)
+        if( !isExist )
         {
-            // Check if the data is an image URL to load
-            string dataStr(conInfo.uploadedData.begin(),
-                           conInfo.uploadedData.end());
+            i_imageId = atoi(parsedURI[2].c_str());
+            i_ret = featureExtractor->processNewImage(
+                i_imageId, conInfo.uploadedData.size(), conInfo.uploadedData.data(),
+                i_nbFeaturesExtracted);
 
-            Json::Value data = StringToJson(dataStr);
-            string imgURL = data["url"].asString();
-            if (imgDownloader->canDownloadImage(imgURL))
+            if (i_ret == IMAGE_NOT_DECODED)
             {
-                std::vector<char> imgData;
-                long HTTPResponseCode;
-                i_ret = imgDownloader->getImageData(imgURL, imgData, HTTPResponseCode);
-                if (i_ret == OK)
-                    i_ret = featureExtractor->processNewImage(
-                        i_imageId, imgData.size(), imgData.data(),
-                        i_nbFeaturesExtracted);
-                else
-                    ret["image_downloader_http_response_code"] = (Json::Int64)HTTPResponseCode;
+                // Check if the data is an image URL to load
+                string dataStr(conInfo.uploadedData.begin(),
+                                conInfo.uploadedData.end());
+
+                Json::Value data = StringToJson(dataStr);
+                string imgURL = data["url"].asString();
+                if (imgDownloader->canDownloadImage(imgURL))
+                {
+                    std::vector<char> imgData;
+                    long HTTPResponseCode;
+                    i_ret = imgDownloader->getImageData(imgURL, imgData, HTTPResponseCode);
+                    if (i_ret == OK)
+                        i_ret = featureExtractor->processNewImage(
+                            i_imageId, imgData.size(), imgData.data(),
+                            i_nbFeaturesExtracted);
+                    else
+                        ret["image_downloader_http_response_code"] = (Json::Int64)HTTPResponseCode;
+                }
             }
         }
 
