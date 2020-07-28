@@ -162,23 +162,30 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
 
             if (i_ret == IMAGE_NOT_DECODED)
             {
-                // Check if the data is an image URL to load
-                string dataStr(conInfo.uploadedData.begin(),
-                                conInfo.uploadedData.end());
-
-                Json::Value data = StringToJson(dataStr);
-                string imgURL = data["url"].asString();
-                if (imgDownloader->canDownloadImage(imgURL))
+                 try
                 {
-                    std::vector<char> imgData;
-                    long HTTPResponseCode;
-                    i_ret = imgDownloader->getImageData(imgURL, imgData, HTTPResponseCode);
-                    if (i_ret == OK)
-                        i_ret = featureExtractor->processNewImage(
-                            i_imageId, imgData.size(), imgData.data(),
-                            i_nbFeaturesExtracted);
-                    else
-                        ret["image_downloader_http_response_code"] = (Json::Int64)HTTPResponseCode;
+                    // Check if the data is an image URL to load
+                    string dataStr(conInfo.uploadedData.begin(),
+                                    conInfo.uploadedData.end());
+
+                    Json::Value data = StringToJson(dataStr);
+                    string imgURL = data["url"].asString();
+                    if (imgDownloader->canDownloadImage(imgURL))
+                    {
+                        std::vector<char> imgData;
+                        long HTTPResponseCode;
+                        i_ret = imgDownloader->getImageData(imgURL, imgData, HTTPResponseCode);
+                        if (i_ret == OK)
+                            i_ret = featureExtractor->processNewImage(
+                                i_imageId, imgData.size(), imgData.data(),
+                                i_nbFeaturesExtracted);
+                        else
+                            ret["image_downloader_http_response_code"] = (Json::Int64)HTTPResponseCode;
+                    }
+                }
+                catch(Json::LogicError e)
+                {
+                    std::cout << "\nJSON::LogicError catched. Can't parse anything from data.\nIt could be broken or encoded\n";
                 }
             }
         }
