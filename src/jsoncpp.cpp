@@ -394,12 +394,22 @@ bool Reader::readValue() {
 
   switch (token.type_) {
   case tokenObjectBegin:
-    successful = readObject(token);
-    currentValue().setOffsetLimit(current_ - begin_);
+    try {
+      successful = readObject(token);
+      currentValue().setOffsetLimit(current_ - begin_);
+    }
+    catch(...) {
+      std::cout << e.what() << "\nGot exception. Failed readObject\n";
+    }
     break;
   case tokenArrayBegin:
-    successful = readArray(token);
-    currentValue().setOffsetLimit(current_ - begin_);
+      try {
+        successful = readArray(token);
+        currentValue().setOffsetLimit(current_ - begin_);
+    }
+    catch(...) {
+      std::cout << e.what() << "\nGot exception. Failed readArray\n";
+    }
     break;
   case tokenNumber:
     successful = decodeNumber(token);
