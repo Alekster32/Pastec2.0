@@ -183,7 +183,7 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
                             ret["image_downloader_http_response_code"] = (Json::Int64)HTTPResponseCode;
                     }
                 }
-                catch(Json::LogicError e)
+                catch(...)
                 {
                     std::cout << "\nJSON::LogicError catched. Can't parse anything from data.\nIt could be broken or encoded\n";
                 }
@@ -239,6 +239,7 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
             // Check if the data is an image URL to load
             string dataStr(conInfo.uploadedData.begin(),
                            conInfo.uploadedData.end());
+            std::cout <<"param: " << p_searchImage << "URI with pattern. Image undecoded. DataStr: " << dataStr << std::endl;
 
             Json::Value data = StringToJson(dataStr);
             string imgURL = data["url"].asString();
@@ -340,6 +341,7 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
     {
         string dataStr(conInfo.uploadedData.begin(),
                        conInfo.uploadedData.end());
+        std::cout << "param: " << p_ioIndex << "URI with pattern. Connection = POST. DataStr: " << dataStr << std::endl;
 
         Json::Value data = StringToJson(dataStr);
         u_int32_t i_ret;
@@ -377,6 +379,7 @@ void RequestHandler::handleRequest(ConnectionInfo &conInfo)
     {
         string dataStr(conInfo.uploadedData.begin(),
                        conInfo.uploadedData.end());
+        std::cout << "param: " << p_root << "URI with pattern. Connection = POST DataStr: " << dataStr << std::endl;
 
         Json::Value data = StringToJson(dataStr);
         u_int32_t i_ret;
